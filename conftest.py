@@ -1,8 +1,13 @@
+import logging
 import pytest
 from selenium import webdriver
 import subprocess
 import os
 import allure
+from datetime import datetime
+
+logger = logging.getLogger(__name__)
+log_dir = "logs"
 
 
 @pytest.fixture(scope="module")
@@ -18,7 +23,7 @@ def pytest_sessionfinish(session, exitstatus):
         print("Allure results directory not found!")
         return
 
-    print('Allure generate reports/allure-results -o reports/allure-reports --clean')
+    print("Allure generate reports/allure-results -o reports/allure-reports --clean")
     report_dir = "reports/allure-reports"
     subprocess.run(["allure", "generate", "reports/allure-results", "-o", report_dir, "--clean"])
 
@@ -51,3 +56,17 @@ def pytest_runtest_makereport(item, call):
 
             # Attach the screenshot to the Allure report
             allure.attach.file(screenshot_path, name="screenshot", attachment_type=allure.attachment_type.PNG)
+
+
+def pytest_configure(config):
+    os.makedirs(log_dir, exist_ok=True)
+    log_file = os.path.join(log_dir, datetime.now().strftime("log_%Y%m%d_%H%M%S.log"))
+    config.option.log_file = log_file
+
+
+def pytest_runtest_setup(item):
+    print(f'开始执行测试用例{item.name}')
+
+
+def pytest_runtest_teardown(item):
+    print(f'结束执行测试用例{item.name}')

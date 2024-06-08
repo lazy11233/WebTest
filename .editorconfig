@@ -1,0 +1,32 @@
+# 顶级配置文件根标识
+root = true
+
+# 默认配置，适用于所有文件
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+# 针对 Python 文件的特殊配置
+[*.py]
+indent_style = space
+indent_size = 4
+max_line_length = 79
+
+# 针对 JSON 文件的特殊配置
+[*.json]
+indent_style = space
+indent_size = 2
+
+# 针对 Markdown 文件的特殊配置
+[*.md]
+trim_trailing_whitespace = false
+
+# 针对 YAML 文件的特殊配置
+[*.yml]
+[*.yaml]
+indent_style = space
+indent_size = 2

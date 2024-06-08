@@ -21,7 +21,6 @@ def pytest_sessionfinish(session, exitstatus):
     print('Allure generate reports/allure-results -o reports/allure-reports --clean')
     report_dir = "reports/allure-reports"
     subprocess.run(["allure", "generate", "reports/allure-results", "-o", report_dir, "--clean"])
-    # subprocess.run(['allure', 'open', report_dir])
 
 
 def pytest_runtest_logreport(report):
@@ -52,9 +51,3 @@ def pytest_runtest_makereport(item, call):
 
             # Attach the screenshot to the Allure report
             allure.attach.file(screenshot_path, name="screenshot", attachment_type=allure.attachment_type.PNG)
-
-
-@pytest.fixture(scope="session", autouse=True)
-def setup_screenshots_dir():
-    if not os.path.exists("screenshots"):
-        os.makedirs("screenshots")

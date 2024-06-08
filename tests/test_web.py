@@ -1,31 +1,14 @@
-import time
-
+import inspect
 import allure
-from selenium import webdriver
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 
-# def test_bilibili():
-#     driver = webdriver.Chrome()
-#     try:
-#         driver.get("https://www.bilibili.com")
-#         # 1. 找到输入框
-#         search_box = driver.find_element(By.CLASS_NAME, "nav-search-input")
-#         search_box.send_keys("疯狂滴小黑")
-#         search_box.send_keys(Keys.ENTER)
-#         # 等待几秒钟以便看到结果
-#         driver.implicitly_wait(5)
-#         # 关闭driver
-#         driver.quit()
-#     finally:
-#         driver.quit()
-#
-#
-# test_bilibili()
-
-
-def test_google_search_fail(driver):
+def test_baidu_search(driver):
     driver.get("https://www.baidu.com")
-    # search_element = driver.find_element(By.CLASS_NAME, 'xxxx')
-    assert False
+    try:
+        search_element = driver.find_element(By.CLASS_NAME, 'xxxx')
+        search_element.click()
+    except NoSuchElementException:
+        current_function = inspect.currentframe().f_code.co_name
+        allure.attach(driver.get_screenshot_as_png(), f'{current_function}_element', allure.attachment_type.PNG)
